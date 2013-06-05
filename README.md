@@ -1,7 +1,7 @@
 mobile-local
 ============
 
-Just a test mobile app
+Just a mobile app for learning purposes
 
 1. `git clone git://github.com/boaf/mobile-local.git && cd mobile-local`
 2. `python -m SimpleHTTPServer 8080` (or some other HTTP server)
@@ -10,18 +10,8 @@ Just a test mobile app
 Tests
 -----
 
-### Requirements
+Provided by [Jasmine 1.3.1](http://pivotal.github.io/jasmine/).
 
-- Node >= 0.6.3
-- Buster >= 0.6.12
+### Running
 
-### Running (method 1)
-
-1. `buster static`
-2. Visit `localhost:8282`
-
-### Running (method 2)
-
-1. `buster server`
-2. Visit `localhost:1111`
-3. `buster test` (in a new terminal)
+1. Visit `localhost:8080/tests.html`

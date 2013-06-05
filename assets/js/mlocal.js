@@ -51,7 +51,7 @@
     /*
      * Location storage and history interface.
      */
-    var Data = (function () {
+    function Data () {
 
         var
             /*
@@ -74,8 +74,8 @@
              */
             store = new Store(APP_NAME);
 
-        /**
-         * Utility method to store data. Returns false if neither required
+        /*
+         * Utility method to store data. Return false if neither required
          *     arguments are provided, true otherwise, while setting data.
          */
         function set_(data) {
@@ -90,8 +90,8 @@
             return store.data;
         }
 
-        /**
-         * Utility method to retrieve data. Returns previously stored data or,
+        /*
+         * Utility method to retrieve data. Return previously stored data or,
          *     if stored data is erroneous or null, DEFAULT_STATE, which is
          *     stored and returned.
          */
@@ -105,75 +105,69 @@
             return DEFAULT_STATE;
         }
 
-        /*
-         * Initialize data store if empty.
+        /**
+         * Set and/or get location data. If no arguments are supplied,
+         *     return previously stored location, otherwise return location
+         *     derived from arguments, store location and add to history.
+         * Arguments for location are postal code, English name of location
+         *     (i.e. 'Tacoma, WA'), latitude and longitude of location.
          */
-        function init_() {
-            if (! store.data)
-                set_(DEFAULT_STATE);
+        this.location = function (postal, nice, lat, lon) {
+            if (arguments.length < 4) /* Require all four args */
+                return get_().location;
 
-            return true;
-        }
+            var location = {
+                    'postal_code': postal,
+                    'nice_name': nice,
+                    'latitude': lat,
+                    'longitude': lon
+                },
+                current_object = get_(),
+                history = [].slice.call(current_object.history, 0,
+                                        HISTORY_SIZE - 1);
 
-        return init_() && {
+            history.unshift({
+                'postal_code': location.postal_code,
+                'nice_name': location.nice_name,
+                'latitude': location.latitude,
+                'longitude': location.longitude
+            });
 
-            /**
-             * Sets and/or gets location data. If no arguments are supplied,
-             *     previously stored location is returned, otherwise location
-             *     derived from arguments is returned (in addition to the
-             *     location being stored and added to history).
-             * Arguments for location are postal code, English name of location
-             *     (i.e. 'Tacoma, WA'), latitude and longitude of location.
-             */
-            location: function (postal, nice, lat, lon) {
-                if (arguments.length < 4) /* Require all four args */
-                    return get_().location;
+            set_({ 'location': location, 'history': history });
 
-                var location = {
-                        'postal_code': postal,
-                        'nice_name': nice,
-                        'latitude': lat,
-                        'longitude': lon
-                    },
-                    current_object = get_(),
-                    history = [].slice.call(current_object.history, 0,
-                                            HISTORY_SIZE - 1);
-
-                history.unshift({
-                    'postal_code': location.postal_code,
-                    'nice_name': location.nice_name,
-                    'latitude': location.latitude,
-                    'longitude': location.longitude
-                });
-
-                set_({ 'location': location, 'history': history });
-
-                return location;
-            },
-
-            /**
-             * Gets historical location data. Automatically removes last
-             *     location in history if history array length is greater than
-             *     or equal to HISTORY_SIZE.
-             */
-            history: function (location) {
-                return get_().history;
-            },
-
-            /*
-             * Initialize storage to DEFAULT_STATE.
-             */
-            init: function () {
-                return set_(DEFAULT_STATE);
-            },
-
-            /*
-             * Gets the current state as an object. For debugging purposes.
-             */
-            current_state: function () {
-                return get_();
-            }
+            return location;
         };
-    })();
+
+        /**
+         * Get historical location data. Automatically remove last
+         *     location in history if history array length is greater than
+         *     or equal to HISTORY_SIZE.
+         */
+        this.history = function (location) {
+            return get_().history;
+        };
+
+        /*
+         * Initialize storage to DEFAULT_STATE.
+         */
+        this.init = function () {
+            return set_(DEFAULT_STATE);
+        };
+
+        /*
+         * Get the current state as an object. For debugging purposes.
+         */
+        this.current_state = function () {
+            return get_();
+        };
+
+        /* Initialize storage */
+        if (! store.data)
+            set_(DEFAULT_STATE);
+    }
+
+    function get_position () {
+        return navigator.geolocation.getCurrentPosition();
+    }
 
 // })(jQuery, window);
