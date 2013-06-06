@@ -166,8 +166,9 @@
             set_(DEFAULT_STATE);
     }
 
-    function get_position () {
-        return navigator.geolocation.getCurrentPosition();
-    }
+    // TODO: Figure out how to do test this. Or should I bother?
+    // function get_position () {
+    //     return navigator.geolocation.getCurrentPosition();
+    // }
 
 // })(jQuery, window);
