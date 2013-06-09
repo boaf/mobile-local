@@ -4,4 +4,10 @@ mobile-local
 Just a mobile app for learning purposes
 
 1. `git clone git://github.com/boaf/mobile-local.git && cd mobile-local`
-2. `grunt server` or `grunt test`
+2. `npm install`
+3. `grunt server` or `grunt test`
+
+Requirements
+------------
+
+`grunt ~0.4.1`
