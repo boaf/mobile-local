@@ -10,4 +10,5 @@ Just a mobile app for learning purposes
 Requirements
 ------------
 
-`grunt ~0.4.1`
+- `node@0.10.8`
+- `npm@1.2.23`
