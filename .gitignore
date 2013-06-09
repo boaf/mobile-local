@@ -11,3 +11,7 @@ Icon
 
 .Spotlight-V100
 .Trashes
+
+node_modules
+.npm-debug.log
+tmp
